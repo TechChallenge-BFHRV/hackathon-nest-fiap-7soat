@@ -58,7 +58,46 @@ export class AuthService {
           this.logger.error(`POST: auth/register: error: ${error}`);
           throw new InternalServerErrorException('Server error');
         }
+      }
+
+      async loginUser(email: string, password: string): Promise<any> {
+        this.logger.log(`POST: auth/login: Login iniciado: ${email}`);
+        let user;
+        try {
+          user = await this.prisma.user.findUniqueOrThrow({
+            where: {
+              email
+            },
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              password: true,
+              createdAt: true,
+            }
+          });
     
+        } catch (error) {
+          this.logger.error(`POST: auth/login: error: ${error}`);
+          throw new BadRequestException('Wrong credentials');
+        }
+    
+        // Compare the provided password with the hashed password
+        const passwordMatch = await bcrypt.compare(password, user.password);
+    
+        if (!passwordMatch) {
+          throw new BadRequestException('Wrong credentials');
+        }
+        
+        delete user.password;
+        
+        this.logger.log(`POST: auth/login: Usuário logado com sucesso: ${user.email}`);
+        return {
+          user,
+          token: this.getJwtToken({
+            id: user.id,
+          })
+        };
       }
 
       private getJwtToken(payload: JwtPayload) {
