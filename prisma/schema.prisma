@@ -20,4 +20,17 @@ model User {
   password String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  uploadLogs  UploadLog[]
+}
+
+model UploadLog {
+  id Int @id @default(autoincrement())
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileName String
+  fileType String
+  fileSize Int
+  uploadStarted DateTime @default(now())
+  uploadFinished DateTime?
+  s3Url String?
 }
