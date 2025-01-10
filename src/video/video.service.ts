@@ -1,14 +1,21 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Logger, Injectable } from '@nestjs/common';
 import { Readable } from 'stream';
+import { UploadstatusService } from '../uploadstatus/uploadstatus.service';
 
 @Injectable()
 export class VideoService {
     private s3Client: S3Client;
-    async upload(file) {
+    constructor(private uploadStatusService: UploadstatusService) {}
+
+    async upload(file, user) {
+      const initLog = await this.uploadStatusService.logUpload({ fileName: file.originalname, fileType: file.mimetype, fileSize: file.size }, user);
       const bucketS3 = 'hackathon-7soat-fiap-49-nest';
       const key = `uploads/${Date.now()}-${file.originalname}`;
       const fileUrl = await this.uploadToS3(bucketS3, key, file.buffer, file.mimetype);
+      if (fileUrl) {
+        const updateLog = await this.uploadStatusService.updateLog(initLog.id, fileUrl);
+      }
       return { url: fileUrl };
     }
 
