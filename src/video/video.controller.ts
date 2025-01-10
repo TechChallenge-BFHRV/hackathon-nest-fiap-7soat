@@ -1,8 +1,8 @@
-import { Post, UseInterceptors, UploadedFile, Controller, UseGuards, Req } from '@nestjs/common';
+import { Post, UseInterceptors, UploadedFile, Controller, UseGuards } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { VideoService } from './video.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
 
 @ApiBearerAuth()
@@ -29,10 +29,12 @@ export class VideoController {
         },
       })
     @UseInterceptors(FileInterceptor('file'))
-    async upload(@UploadedFile() file: Express.Multer.File, @Req() req): Promise<{ url: string }> {
-        console.log('req in uplioad is:', req);
-        const res = await this.videoService.upload(file);
-        return res;
+    @ApiResponse({status: 201, description: 'Upload success'})
+    @ApiResponse({status: 400, description: 'Bad request'})
+    @ApiResponse({status: 500, description: 'Server error'})
+    async upload(@UploadedFile() file: Express.Multer.File): Promise<{ url: string }> {
+      const res = await this.videoService.upload(file);
+      return res;
     }
 
 }
