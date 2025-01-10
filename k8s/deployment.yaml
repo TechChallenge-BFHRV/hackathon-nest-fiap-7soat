@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hackathon-nest
+spec:
+  selector:
+    matchLabels:
+      app: hackathon-nest
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hackathon-nest
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: hackathon-nest
+          image: viniciusdeliz/hackathon-nest:main
+          ports: 
+            - containerPort: 3000
+          env:
+            - name: JWT_SECRET
+              value: your_token_secret_key
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: PROD_DATABASE_URL
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+              ephemeral-storage: "512Mi"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+              ephemeral-storage: "8Gi"

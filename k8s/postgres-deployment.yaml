@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hackathon-postgres-db
+  labels:
+    app: hackathon-postgres-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hackathon-postgres-db
+  template:
+    metadata:
+      labels:
+        app: hackathon-postgres-db
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: hackathon-postgres-db
+          image: postgres:15 # Use the official PostgreSQL image
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: docker # Set the PostgreSQL username
+            - name: POSTGRES_PASSWORD
+              value: docker # Set the PostgreSQL password
+            - name: POSTGRES_DB
+              value: hackathondb # Set the default database name
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+              ephemeral-storage: "500Mi"
+            limits:
+              memory: "2Gi"
+              ephemeral-storage: "4Gi"
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hackathon-postgres-db
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: hackathon-postgres-db
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

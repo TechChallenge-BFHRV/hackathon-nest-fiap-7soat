@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hackathon-nest
+spec:
+  selector:
+    app: hackathon-nest
+  ports:
+    - protocol: TCP
+      port: 3000
+  type: NodePort
