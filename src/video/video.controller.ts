@@ -28,7 +28,6 @@ export class VideoController {
     @UseInterceptors(FileInterceptor('file'))
     async upload(@UploadedFile() file): Promise<{ url: string }> {
     const res = await this.videoService.upload(file);
-    console.log('res is:', res);
     return res;
     }
 
