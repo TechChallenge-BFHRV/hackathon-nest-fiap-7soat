@@ -46,7 +46,7 @@ export class AuthService {
           return {
             user: newuser,
             token: this.getJwtToken({
-              id: `${newuser.id}`,
+              email: `${newuser.email}`,
             })
           };
           
@@ -95,7 +95,8 @@ export class AuthService {
         return {
           user,
           token: this.getJwtToken({
-            id: user.id,
+            email: user.email,
+  
           })
         };
       }
@@ -105,5 +106,9 @@ export class AuthService {
         const token = this.jwtService.sign(payload);
         return token;
     
+      }
+
+      verifyToken(token: string) {
+        return this.jwtService.verify(token);
       }
 }
