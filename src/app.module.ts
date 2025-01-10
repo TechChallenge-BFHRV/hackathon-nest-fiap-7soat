@@ -4,12 +4,14 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { VideoModule } from './video/video.module';
+import { UploadstatusModule } from './uploadstatus/uploadstatus.module';
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
     VideoModule,
+    UploadstatusModule,
   ],
   controllers: [AppController],
   providers: [AppService],
