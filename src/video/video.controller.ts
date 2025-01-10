@@ -26,7 +26,7 @@ export class VideoController {
         },
       })
     @UseInterceptors(FileInterceptor('file'))
-    async upload(@UploadedFile() file): Promise<{ url: string }> {
+    async upload(@UploadedFile() file: Express.Multer.File): Promise<{ url: string }> {
     const res = await this.videoService.upload(file);
     return res;
     }
