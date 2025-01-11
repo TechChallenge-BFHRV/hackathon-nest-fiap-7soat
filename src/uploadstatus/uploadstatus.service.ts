@@ -21,12 +21,13 @@ export class UploadstatusService {
         return log;
     }
 
-    async updateLog(id: number, s3Url: string) {
+    async updateLog(id: number, s3Object) {
         const log = await this.prisma.uploadLog.update({
             where: { id },
             data: {
                 uploadFinished: new Date(),
-                s3Url: s3Url,
+                s3Bucket: s3Object.bucketS3,
+                s3Key: s3Object.key,
             }
         });
         return log;

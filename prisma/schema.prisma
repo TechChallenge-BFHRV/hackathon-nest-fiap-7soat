@@ -32,5 +32,6 @@ model UploadLog {
   fileSize Int
   uploadStarted DateTime @default(now())
   uploadFinished DateTime?
-  s3Url String?
+  s3Bucket String?
+  s3Key String?
 }
