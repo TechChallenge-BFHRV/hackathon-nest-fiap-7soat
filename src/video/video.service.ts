@@ -1,4 +1,5 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Logger, Injectable } from '@nestjs/common';
 import { Readable } from 'stream';
 import { UploadstatusService } from '../uploadstatus/uploadstatus.service';
@@ -14,7 +15,7 @@ export class VideoService {
       const key = `uploads/${Date.now()}-${file.originalname}`;
       const fileUrl = await this.uploadToS3(bucketS3, key, file.buffer, file.mimetype);
       if (fileUrl) {
-        const updateLog = await this.uploadStatusService.updateLog(initLog.id, fileUrl);
+       await this.uploadStatusService.updateLog(initLog.id, { bucketS3, key });
       }
       return { url: fileUrl };
     }
@@ -55,5 +56,12 @@ export class VideoService {
         },
       });
       return this.s3Client;
+    }
+
+    async generatePresignedUrl(bucket: string, key: string, expiresIn: number = 3600): Promise<string> {
+      const s3 = this.getS3();
+      const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+      const url = await getSignedUrl(s3, command, { expiresIn });
+      return url;
     }
 }
