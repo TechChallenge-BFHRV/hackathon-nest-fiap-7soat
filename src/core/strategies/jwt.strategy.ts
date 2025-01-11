@@ -10,8 +10,6 @@ import { User } from "src/core/entities/user.entity";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-
-    
     constructor(
         private prisma: PrismaService,
     ) {
@@ -22,9 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: JwtPayload): Promise<User> {
-
         const { email } = payload;
-
         try {
             const user = await this.prisma.user.findUniqueOrThrow({
                 where: {email: email},
@@ -39,9 +35,5 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         } catch (error) {
             throw new UnauthorizedException('Invalid token');
         }
-        
-        
     }
-
-
 }
