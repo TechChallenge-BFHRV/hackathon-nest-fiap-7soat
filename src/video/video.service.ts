@@ -3,12 +3,15 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Logger, Injectable } from '@nestjs/common';
 import { Readable } from 'stream';
 import { UploadstatusService } from '../uploadstatus/uploadstatus.service';
+import { MessagesService } from '../messages/messages.service';
 
 @Injectable()
 export class VideoService {
     private s3Client: S3Client;
-    constructor(private uploadStatusService: UploadstatusService) {}
-
+    constructor(
+      private uploadStatusService: UploadstatusService,
+      private messageService: MessagesService,
+    ) {}
     async upload(file, user) {
       const initLog = await this.uploadStatusService.logUpload({ fileName: file.originalname, fileType: file.mimetype, fileSize: file.size }, user);
       const bucketS3 = 'hackathon-7soat-fiap-49-nest';
@@ -16,6 +19,11 @@ export class VideoService {
       const fileUrl = await this.uploadToS3(bucketS3, key, file.buffer, file.mimetype);
       if (fileUrl) {
        await this.uploadStatusService.updateLog(initLog.id, { bucketS3, key });
+       await this.messageService.sendMessage({
+        bucketS3,
+        key,
+        userEmail: user.email,
+       })
       }
       return { url: fileUrl };
     }
