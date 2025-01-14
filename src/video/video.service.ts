@@ -23,6 +23,7 @@ export class VideoService {
         bucketS3,
         key,
         userEmail: user.email,
+        logId: initLog.id,
        })
       }
       return { url: fileUrl };
