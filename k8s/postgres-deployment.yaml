@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: hackathon-postgres-db
   labels:
@@ -9,6 +9,7 @@ spec:
   selector:
     matchLabels:
       app: hackathon-postgres-db
+  serviceName: "hackathon-postgres-db" # Matches the headless service name
   template:
     metadata:
       labels:
@@ -38,30 +39,28 @@ spec:
             limits:
               memory: "2Gi"
               ephemeral-storage: "4Gi"
-      volumes:
-        - name: postgres-storage
-          persistentVolumeClaim:
-            claimName: postgres-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: hackathon-postgres-db
+  labels:
+    app: hackathon-postgres-db
 spec:
   type: ClusterIP
   ports:
     - port: 5432
       targetPort: 5432
+  clusterIP: None # Headless service required for StatefulSet
   selector:
     app: hackathon-postgres-db
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
