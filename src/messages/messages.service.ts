@@ -20,12 +20,13 @@ export class MessagesService {
     }
   
     async sendMessage(messageBody: any): Promise<void> {
+      console.log('sending message...', messageBody);
         try {
           const command = new SendMessageCommand({
             QueueUrl: this.queueUrl, // Queue URL
             MessageBody: JSON.stringify(messageBody), // Message payload
           });
-    
+
           const response = await this.sqsClient.send(command);
           console.log('Message sent successfully:', response);
         } catch (error) {

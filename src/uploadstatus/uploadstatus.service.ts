@@ -8,8 +8,6 @@ export class UploadstatusService {
     constructor(private readonly prisma: PrismaService) {}
     
     async logUpload(file: UploadLog, user: User) {
-        console.log('will do something with this...', file, user);
-
         const log = await this.prisma.uploadLog.create({
             data: {
                 fileName: file.fileName,
