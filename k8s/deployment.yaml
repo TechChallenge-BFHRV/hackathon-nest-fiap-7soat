@@ -21,6 +21,26 @@ spec:
           env:
             - name: JWT_SECRET
               value: your_token_secret_key
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_SESSION_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: AWS_SESSION_TOKEN
+            - name: SQS_QUEUE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: SQS_QUEUE_URL
             - name: DATABASE_URL
               valueFrom:
                 configMapKeyRef:
