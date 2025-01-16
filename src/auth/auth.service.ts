@@ -111,4 +111,8 @@ export class AuthService {
       verifyToken(token: string) {
         return this.jwtService.verify(token);
       }
+
+      getPrivacyPolicy(): string {
+        return "Ao utilizar a plataforma, você consente com o envio e armazenamento temporário dos vídeos enviados para fins de processamento. Os vídeos originais serão armazenados de forma segura em nossos servidores por um período limitado, sendo excluídos após a conclusão do processamento ou em até 14 dias. As miniaturas geradas a partir dos vídeos serão disponibilizadas para download em formato ZIP, armazenadas por conveniência do cliente. Esses arquivos estarão disponíveis por um prazo de 60 dias e serão excluídos automaticamente após esse período. Nosso sistema utiliza criptografia para proteger seus dados e garante a exclusão definitiva de arquivos expirados. Caso tenha dúvidas ou deseje exercer seus direitos sob a LGPD, entre em contato conosco."
+      }
 }

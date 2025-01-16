@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -33,5 +33,11 @@ export class AuthController {
     async login(@Res() response, @Body() loginUserDto: LoginUserDto) {
       const data = await this.authService.loginUser(loginUserDto.email, loginUserDto.password);
       response.status(HttpStatus.OK).send(data);
+    }
+
+
+    @Get('privacy-policy')
+    getPrivacyPolicyLGPD(): string {
+      return this.authService.getPrivacyPolicy();
     }
 }
