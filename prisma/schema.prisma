@@ -32,7 +32,8 @@ model UploadLog {
   fileSize Int
   uploadStarted DateTime @default(now())
   uploadFinished DateTime?
-  s3Bucket String?
-  s3Key String?
+  bucketS3 String?
+  keyS3 String?
   thumbnailsProcessed Boolean?
+  status String?
 }
