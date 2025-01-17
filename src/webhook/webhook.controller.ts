@@ -1,5 +1,6 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus } from '@nestjs/common';
 import { WebhookService } from './webhook.service';
+import { VideoProcessorWebhookUpdateDto } from './core/entities/python-video-processor-webhook-update.dto';
 
 @Controller('webhook')
 export class WebhookController {
