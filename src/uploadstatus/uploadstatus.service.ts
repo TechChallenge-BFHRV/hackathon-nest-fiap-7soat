@@ -19,14 +19,17 @@ export class UploadstatusService {
         return log;
     }
 
-    async updateLog(id: number, s3Object) {
+    async updateLog(id: number, payload: UploadLog) {
+        const data: { [key: string]: any } = {};
+        for (const key in payload) {
+            if (payload.hasOwnProperty(key)) {
+                data[key] = payload[key];
+            }
+        }
+
         const log = await this.prisma.uploadLog.update({
             where: { id },
-            data: {
-                uploadFinished: new Date(),
-                s3Bucket: s3Object.bucketS3,
-                s3Key: s3Object.key,
-            }
+            data: data,
         });
         return log;
     }

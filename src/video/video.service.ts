@@ -15,13 +15,13 @@ export class VideoService {
     async upload(file, user) {
       const initLog = await this.uploadStatusService.logUpload({ fileName: file.originalname, fileType: file.mimetype, fileSize: file.size }, user);
       const bucketS3 = 'hackathon-7soat-fiap-49-nest';
-      const key = `uploads/${Date.now()}-${file.originalname}`;
-      const fileUrl = await this.uploadToS3(bucketS3, key, file.buffer, file.mimetype);
+      const keyS3 = `uploads/${Date.now()}-${file.originalname}`;
+      const fileUrl = await this.uploadToS3(bucketS3, keyS3, file.buffer, file.mimetype);
       if (fileUrl) {
-       await this.uploadStatusService.updateLog(initLog.id, { bucketS3, key });
+       await this.uploadStatusService.updateLog(initLog.id, { bucketS3, keyS3 });
        await this.messageService.sendMessage({
         bucketS3,
-        key,
+        key: keyS3,
         userEmail: user.email,
         logId: initLog.id,
        })
