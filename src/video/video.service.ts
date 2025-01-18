@@ -14,7 +14,7 @@ export class VideoService {
     ) {}
     async upload(file, user) {
       const initLog = await this.uploadStatusService.logUpload({ fileName: file.originalname, fileType: file.mimetype, fileSize: file.size }, user);
-      const bucketS3 = 'hackathon-7soat-fiap-49-nest';
+      const bucketS3 = process.env.S3_BUCKET_NAME;
       const keyS3 = `uploads/${Date.now()}-${file.originalname}`;
       const fileUrl = await this.uploadToS3(bucketS3, keyS3, file.buffer, file.mimetype);
       if (fileUrl) {
