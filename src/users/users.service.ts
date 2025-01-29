@@ -3,6 +3,7 @@ import { User } from 'src/core/entities/user.entity';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
+import { UploadLog } from 'src/core/entities/upload-log.entity';
 
 @Injectable()
 export class UsersService {
@@ -59,7 +60,25 @@ export class UsersService {
         this.logger.error(`GET/{id}: error: ${error}`);
         throw new InternalServerErrorException('Server error');
       }
-  }
+     }
+
+     async findUserUploads(username: string): Promise<UploadLog[]> {
+      try {
+        const user = await this.prisma.user.findUniqueOrThrow({
+          where: {
+            email: username
+          },
+          select: {
+            uploadLogs: true
+          },
+        });
+        return user.uploadLogs;
+      } catch (error) {
+        this.prismaErrorHandler(error, "GET", username);
+        this.logger.error(`GET/{id}: error: ${error}`);
+        throw new InternalServerErrorException('Server error');
+      }
+     }
 
     prismaErrorHandler = (error: any, method: string, value: string = null) => { 
         if (error.code === 'P2002') {
