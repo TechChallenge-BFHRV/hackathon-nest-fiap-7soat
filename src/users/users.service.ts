@@ -69,7 +69,11 @@ export class UsersService {
             email: username
           },
           select: {
-            uploadLogs: true
+            uploadLogs: {
+              orderBy: {
+                uploadStarted: 'desc',
+              }
+            }
           },
         });
         return user.uploadLogs;
