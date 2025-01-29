@@ -1,4 +1,4 @@
-import { Post, UseInterceptors, UploadedFile, Controller, UseGuards, Req } from '@nestjs/common';
+import { Post, UseInterceptors, UploadedFile, Controller, UseGuards, Req, Get, Query } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { VideoService } from './video.service';
 import { FileInterceptor } from '@nestjs/platform-express';
