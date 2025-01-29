@@ -43,7 +43,7 @@ export class VideoController {
       @Query('key') key: string,
       @Query('expiresIn') expiresIn?: number,
     ): Promise<{ url: string }> {
-      const url = await this.videoService.generatePresignedUrl(bucket, key, expiresIn || 3600);
+      const url = await this.videoService.generatePresignedUrl(bucket, `${key}-thumbnails.zip`, expiresIn || 3600);
       return { url };
     }
 }
