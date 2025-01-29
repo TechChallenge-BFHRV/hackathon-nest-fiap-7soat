@@ -10,18 +10,18 @@ import { JwtAuthGuard } from "src/auth/guards/auth.guard";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   
-@Get('email/:email')
-@UseGuards(JwtAuthGuard)
-@ApiOperation({
-  summary: 'GET USER BY EMAIL',
-  description: 'Private endpoint to get user data by Email.'
-})
-@ApiResponse({status: 200, description: 'Ok', type: User})
-@ApiResponse({status: 401, description: 'Unauthorized'})
-@ApiResponse({status: 500, description: 'Server error'})             //Swagger
-findOneByEmail(@Param('email') email: string) {
-  return this.usersService.findOne(email);
-}
+  @Get('email/:email')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'GET USER BY EMAIL',
+    description: 'Private endpoint to get user data by Email.'
+  })
+  @ApiResponse({status: 200, description: 'Ok', type: User})
+  @ApiResponse({status: 401, description: 'Unauthorized'})
+  @ApiResponse({status: 500, description: 'Server error'})             //Swagger
+  findOneByEmail(@Param('email') email: string) {
+    return this.usersService.findOne(email);
+  }
 
   @Get('videos/:email')
   @UseGuards(JwtAuthGuard)
