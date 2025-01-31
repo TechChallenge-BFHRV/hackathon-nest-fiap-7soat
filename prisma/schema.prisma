@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
@@ -21,6 +26,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   uploadLogs  UploadLog[]
+  role Role @default(USER)
 }
 
 model UploadLog {

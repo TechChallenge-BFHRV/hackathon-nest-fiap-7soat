@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Role } from "@prisma/client";
 import { IsEmail, IsOptional, IsString, Matches, MaxLength, MinLength, NotContains } from "class-validator";
 
 
@@ -52,5 +53,16 @@ export class RegisterUserDto {
     })
     @IsString()
     passwordconf: string;
+
+    @ApiProperty({
+        description: "User Role",
+        nullable: false,
+        required: false,
+        type: "string",
+        example: "ADMIN",
+    })
+    @IsString()
+    @IsOptional()
+    role: Role;
 
 }

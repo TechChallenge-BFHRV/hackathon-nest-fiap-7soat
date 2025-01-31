@@ -2,7 +2,9 @@ import { Controller, Get, Param, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { User } from "src/core/entities/user.entity";
 import { UsersService } from "./users.service";
-import { JwtAuthGuard } from "src/auth/guards/auth.guard";
+import { JwtAuthGuard } from "../auth/guards/auth.guard";
+import { RolesGuard } from "../auth/roles/roles.guard";
+import { Roles } from "../auth/roles/roles.decorator";
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -11,7 +13,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   
   @Get('email/:email')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   @ApiOperation({
     summary: 'GET USER BY EMAIL',
     description: 'Private endpoint to get user data by Email.'
@@ -24,7 +27,8 @@ export class UsersController {
   }
 
   @Get('videos/:email')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
   @ApiOperation({
     summary: 'GET USER VIDEOS BY EMAIL',
     description: 'Private endpoint to get user videos by Email.'

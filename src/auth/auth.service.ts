@@ -74,6 +74,7 @@ export class AuthService {
               email: true,
               password: true,
               createdAt: true,
+              role: true,
             }
           });
     
@@ -96,16 +97,14 @@ export class AuthService {
           user,
           token: this.getJwtToken({
             email: user.email,
-  
+            role: user.role,
           })
         };
       }
 
       private getJwtToken(payload: JwtPayload) {
-
         const token = this.jwtService.sign(payload);
         return token;
-    
       }
 
       verifyToken(token: string) {
