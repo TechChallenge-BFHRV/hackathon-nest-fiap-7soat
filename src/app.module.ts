@@ -7,6 +7,7 @@ import { VideoModule } from './video/video.module';
 import { UploadstatusModule } from './uploadstatus/uploadstatus.module';
 import { MessagesModule } from './messages/messages.module';
 import { WebhookModule } from './webhook/webhook.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { WebhookModule } from './webhook/webhook.module';
     UploadstatusModule,
     MessagesModule,
     WebhookModule,
+    MailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
