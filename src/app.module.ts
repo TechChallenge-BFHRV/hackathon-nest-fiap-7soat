@@ -8,6 +8,7 @@ import { UploadstatusModule } from './uploadstatus/uploadstatus.module';
 import { MessagesModule } from './messages/messages.module';
 import { WebhookModule } from './webhook/webhook.module';
 import { MailerModule } from './mailer/mailer.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MailerModule } from './mailer/mailer.module';
     MessagesModule,
     WebhookModule,
     MailerModule,
+    MetricsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
