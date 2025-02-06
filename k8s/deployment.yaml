@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hackathon-nest
+  labels:
+    app: hackathon-nest
 spec:
   selector:
     matchLabels:
@@ -18,6 +20,7 @@ spec:
           image: viniciusdeliz/hackathon-nest:main
           ports: 
             - containerPort: 3000
+              name: http
           env:
             - name: JWT_SECRET
               value: your_token_secret_key
