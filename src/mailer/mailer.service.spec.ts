@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MailerService } from './mailer.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 
 describe('MailerService', () => {
   let service: MailerService;
 
+  beforeAll(() => {
+    process.env.SENDGRID_API_KEY = 'SG.MOCKED_API_KEY';
+  });
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forFeature(async () => ({
-          SENDGRID_API_KEY: 'SG.MOCKED_API_KEY'
-        }))
-      ],
+      imports: [],
       providers: [MailerService, ConfigService],
     }).compile();
 
