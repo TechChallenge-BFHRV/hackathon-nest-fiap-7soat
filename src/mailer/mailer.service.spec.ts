@@ -8,8 +8,10 @@ describe('MailerService', () => {
   beforeEach(async () => {
     const mockConfigService = {
       get: jest.fn((key) => {
-        if (key === 'SENDGRID_API_KEY') return 'SG.abcdef.123456';
-        return null;
+        const mockValues = {
+          'SENDGRID_API_KEY': 'SG.abcdef.123456'
+        };
+        return mockValues[key];
       }),
     };
     const module: TestingModule = await Test.createTestingModule({
