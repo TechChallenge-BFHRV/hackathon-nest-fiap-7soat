@@ -26,7 +26,6 @@ describe("RolesGuard", () => {
   it("should allow access if no roles are required", async () => {
     (reflector.get as jest.Mock).mockReturnValue(undefined);
     const context = mockContext({ email: "user@example.com" });
-    console.log('context first is:', context.switchToHttp().getRequest());
     expect(await guard.canActivate(context)).toBe(true);
   });
 
