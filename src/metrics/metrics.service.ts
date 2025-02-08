@@ -3,7 +3,7 @@ import { Counter, collectDefaultMetrics, register } from 'prom-client';
 
 @Injectable()
 export class MetricsService {
-  private readonly requestCounter: Counter;
+  private requestCounter: Counter;
 
   constructor() {
     collectDefaultMetrics(); // Collects default Node.js metrics (CPU, memory, etc.)
