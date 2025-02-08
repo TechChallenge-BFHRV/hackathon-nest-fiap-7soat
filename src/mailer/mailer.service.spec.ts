@@ -5,14 +5,16 @@ import { ConfigService } from '@nestjs/config';
 describe('MailerService', () => {
   let service: MailerService;
 
-  beforeAll(() => {
-    process.env.SENDGRID_API_KEY = 'SG.MOCKED_API_KEY';
-  });
-
   beforeEach(async () => {
+    const mockConfigService = {
+      get: jest.fn((key) => {
+        if (key === 'SENDGRID_API_KEY') return 'SG.abcdef.123456';
+        return null;
+      }),
+    };
     const module: TestingModule = await Test.createTestingModule({
       imports: [],
-      providers: [MailerService, ConfigService],
+      providers: [MailerService, { provide: ConfigService, useValue: mockConfigService }],
     }).compile();
 
     service = module.get<MailerService>(MailerService);
