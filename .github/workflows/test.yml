@@ -8,7 +8,7 @@ jobs:
     - name: Install modules
       run: npm install
     - name: Run tests
-      run: npm run test
+      run: npm run test:cov
       env:
         FORCE_COLOR: true
         SENDGRID_API_KEY: SG.sample.1234
