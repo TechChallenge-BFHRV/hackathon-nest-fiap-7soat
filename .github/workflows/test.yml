@@ -11,3 +11,4 @@ jobs:
       run: npm run test
       env:
         FORCE_COLOR: true
+        SENDGRID_API_KEY: SG.sample.1234
