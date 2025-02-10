@@ -32,3 +32,59 @@ System Design:
 4. Run `kubectl apply -f k8s/service.yaml`
 5. Execute `kubectl get services`
 6. Get the **external port** from the hackathon-nest and then in your browser navigate to `http://localhost:ExternalPort/api`
+
+## Module Relationship Structure
+
+```mermaid
+graph TD;
+    A[AppModule] -->|imports| AuthModule
+    A -->|imports| UsersModule
+    A -->|imports| VideoModule
+    A -->|imports| UploadstatusModule
+    A -->|imports| MessagesModule
+    A -->|imports| WebhookModule
+    A -->|imports| MailerModule
+    A -->|imports| MetricsModule
+
+    %% Auth Module Dependencies
+    AuthModule -->|generates| AuthGuard
+    AuthModule -->|generates| RolesGuard
+    AuthModule -->|uses| UsersModule
+    AuthModule -->|uses| JwtService
+    AuthModule -->|uses| PrismaService
+
+
+    %% Users Module Dependencies
+    UsersModule -->|secured by| AuthGuard
+    UsersModule -->|secured by| RolesGuard
+    UsersModule -->|uses| PrismaService
+
+    %% Video Module Dependencies
+    VideoModule -->|secured by| AuthGuard
+    VideoModule -->|secured by| RolesGuard
+    VideoModule -->|uses| UploadstatusModule
+    VideoModule -->|uses| MessagesModule
+    VideoModule -->|uses| S3Client
+    VideoModule -->|uses| PrismaService
+
+    %% Upload Status Dependencies
+    UploadstatusModule -->|uses| PrismaService
+
+    %% Messages Module Dependencies
+    MessagesModule -->|uses| SQSService
+
+    %% Webhook Dependencies
+    WebhookModule -->|uses| UploadstatusModule
+    WebhookModule -->|uses| MailerModule
+
+    %% Mailer Dependencies
+    MailerModule -->|uses| SendGridClient
+
+    %% Metrics Dependencies
+    MetricsModule -->|uses| PrometheusClient
+
+    %% Database Communication
+    subgraph "Database Layer"
+        PrismaService -->|queries| PostgreSQL[(PostgreSQL Database)]
+    end
+```
