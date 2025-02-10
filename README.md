@@ -22,6 +22,7 @@ System Design:
 - AWS SQS
 - AWS Lambda
 - Azure AKS
+- Prometheus
 
 ## To run Local Kubernetes Environment
 
