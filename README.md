@@ -2,6 +2,8 @@
 
 Application that takes a video input and generates a zip with video thumbnails.
 
+Infrastructure repository: https://github.com/TechChallenge-BFHRV/hackathon-iac-7soat-fiap
+
 ## Event Storm and System Design
 
 Event Storm: https://miro.com/app/board/uXjVLwQ1nKA=/?share_link_id=710039569837
