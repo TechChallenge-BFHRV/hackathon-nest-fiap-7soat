@@ -90,3 +90,7 @@ graph TD;
         PrismaService -->|queries| PostgreSQL[(PostgreSQL Database)]
     end
 ```
+
+## Video Presentation
+
+https://drive.google.com/drive/folders/11IT0B2llHl1ERIfa_a5E6eIML321ia3Z?usp=drive_link
